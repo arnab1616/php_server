@@ -1,7 +1,34 @@
 const express = require('express');
+const mysql = require('mysql');
 const app = express();
 const port = 3000;
 
+  var connection = mysql.createConnection({
+    host:"localhost",
+    user:"root",
+    password:null,
+    database:"arnabdb"
+  })
+  connection.connect(function(err){
+    if(err){
+      console.log(err.code)
+      console.log(err.fatal)
+    } else{
+        console.log("phpMyAdmin connected successfull!");
+    }
+  })
+  $query = 'SELECT * FROM xyz';
+  connection.query($query, function(err, rows, fields){
+    if(err){
+      console.log("An error ocoure");
+      return;
+    }
+    console.log("Qurey succesfull! ", rows);
+  })
+  
+  connection.end(function(){
+    console.log("Connection closed");
+  })
 app.get('/', (req,res)=>{
     res.json({message:"Deploy succesfull!"})
 })

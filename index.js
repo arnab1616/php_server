@@ -16,8 +16,10 @@ app.get('/', (req,res)=>{
     
         if (queryErr) {
           console.error('Error executing query:', queryErr);
+          res.json({error: queryErr.message})
         } else {
           console.log('Query result:', results);
+            res.json(results)
         }
       });
     });

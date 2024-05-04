@@ -9,7 +9,9 @@ const port = 3000;
     password:null,
     database:"arnabdb"
   })
-  connection.connect(function(err){
+
+app.get('/', (req,res)=>{
+    connection.connect(function(err){
     if(err){
       console.log(err.code)
       console.log(err.fatal)
@@ -23,7 +25,6 @@ const port = 3000;
   connection.end(function(){
     console.log("Connection closed");
   })
-app.get('/', (req,res)=>{
     connection.query($query, function(err, rows, fields){
     if(err){
       console.log("An error ocoure");

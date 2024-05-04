@@ -21,10 +21,6 @@ app.get('/', (req,res)=>{
   })
   $query = 'SELECT * FROM xyz';
 
-  
-  connection.end(function(){
-    console.log("Connection closed");
-  })
     connection.query($query, function(err, rows, fields){
     if(err){
       console.log("An error ocoure");
@@ -32,6 +28,9 @@ app.get('/', (req,res)=>{
     }
     console.log("Qurey succesfull! ", rows);
       res.json(rows);
+  })
+    connection.end(function(){
+    console.log("Connection closed");
   })
     // res.json({message:"Deploy succesfull!"})
 })

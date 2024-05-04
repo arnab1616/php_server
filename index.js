@@ -18,19 +18,21 @@ const port = 3000;
     }
   })
   $query = 'SELECT * FROM xyz';
-  connection.query($query, function(err, rows, fields){
-    if(err){
-      console.log("An error ocoure");
-      return;
-    }
-    console.log("Qurey succesfull! ", rows);
-  })
+
   
   connection.end(function(){
     console.log("Connection closed");
   })
 app.get('/', (req,res)=>{
-    res.json({message:"Deploy succesfull!"})
+    connection.query($query, function(err, rows, fields){
+    if(err){
+      console.log("An error ocoure");
+      return;
+    }
+    console.log("Qurey succesfull! ", rows);
+      res.json(rows);
+  })
+    // res.json({message:"Deploy succesfull!"})
 })
 app.get('/api/fetch/location',(req, res)=>{
     res.json({message:"User location comming out, Please wait !"});

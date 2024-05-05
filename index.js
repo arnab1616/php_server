@@ -30,6 +30,7 @@ app.get('/api/fetch/location', async(req, res)=>{
         const data = await response.json();
         const response1 = await fetch(`https://ipapi.co/${data.ip}/json/`);
         const userData = await response1.json();
+        console.log(userData);
         pool.getConnection((err, connection) => {
           if (err) {
             console.error('Error getting MySQL connection:', err);

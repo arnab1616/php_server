@@ -59,11 +59,26 @@ app.get('/location', async (req, res) => {
     }
 });
 app.get('/api/fetch/location', async(req, res)=>{
+    const options = {
+        method: 'GET',
+        url: 'https://find-any-ip-address-or-domain-location-world-wide.p.rapidapi.com/iplocation',
+        params: {
+          apikey: '873dbe322aea47f89dcf729dcc8f60e8'
+        },
+        headers: {
+              'X-RapidAPI-Key': 'f5477797a3mshfb6292822327c3bp18707ajsn5075c83ad6e0',
+              'X-RapidAPI-Host': 'find-any-ip-address-or-domain-location-world-wide.p.rapidapi.com'
+        }
+      };
     try{
-        const response = await fetch('https://api.ipify.org?format=json');
-        const data = await response.json();
-        const response1 = await fetch(`https://ipapi.co/${data.ip}/json/`);
-        const userData = await response1.json();
+        const response = await axios.request(options);
+        // res.json(response.data);
+        const userData = response.data;
+        console.log(response.data);
+        // const response = await fetch('https://api.ipify.org?format=json');
+        // const data = await response.json();
+        // const response1 = await fetch(`https://ipapi.co/${data.ip}/json/`);
+        // const userData = await response1.json();
         console.log(userData);
         pool.getConnection((err, connection) => {
           if (err) {
@@ -71,7 +86,7 @@ app.get('/api/fetch/location', async(req, res)=>{
             return;
           }
         
-          connection.query(`INSERT INTO user_geolocation (ip_address,network,city,region,country,postal_code,latitude,longitude) VALUES('${userData.ip}','${userData.network}','${userData.city}','${userData.region}','${userData.country_name}','${userData.postal}','${userData.latitude}','${userData.longitude}')`, (queryErr, results) => {
+          connection.query(`INSERT INTO user_geolocation (ip_address,network,city,region,country,postal_code,latitude,longitude) VALUES('${userData.ip}','${userData.network}','${userData.city}','${userData.state}','${userData.country}','${userData.zipCode}','${userData.latitude}','${userData.longitude}')`, (queryErr, results) => {
             connection.release(); 
         
             if (queryErr) {

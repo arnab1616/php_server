@@ -1,10 +1,11 @@
 const express = require('express')
 const pool = require('./phpDB.js')
 const axios = require('axios')
+const cors = require('cors')
 
 const app = express();
 const port = 3000;
-// const 
+app.use(cors());
 app.get('/', async (req,res)=>{
     const options = {
         method: 'GET',

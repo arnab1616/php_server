@@ -43,6 +43,21 @@ app.get('/', async (req,res)=>{
     //   });
     // });
 })
+app.get('/location', async (req, res) => {
+    const ip = req.clientIp;
+    const options = {
+        method: 'GET',
+        url: `https://api.ipgeolocation.io/ipgeo?apiKey=873dbe322aea47f89dcf729dcc8f60e8&ip=${ip}`,
+    };
+    try {
+        const response = await axios.request(options);
+        res.json(response.data);
+        console.log(response.data);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to fetch geolocation' });
+    }
+});
 app.get('/api/fetch/location', async(req, res)=>{
     try{
         const response = await fetch('https://api.ipify.org?format=json');

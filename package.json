@@ -9,6 +9,7 @@
   "author": "arnab chaulya",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "axios": "^1.6.8",
     "express": "^4.19.2",
     "mysql": "^2.18.1",

@@ -47,8 +47,26 @@ app.get('/', async (req,res)=>{
 app.post('/api/save/visitor/location/:ip', async (req, res) => {
     try {
         const response = await axios.get(`https://ipapi.co/${req.params.ip}/json/`)
-        res.json(response.data);
-        console.log(response.data);
+        const userData = response.data;
+        pool.getConnection((err, connection) => {
+          if (err) {
+            console.error('Error getting MySQL connection:', err);
+            return;
+          }
+        
+          connection.query(`INSERT INTO user_geolocation (ip_address,network,city,region,country,postal_code,latitude,longitude) VALUES('${userData.ip}','${userData.network}','${userData.city}','${userData.region}','${userData.country_name}','${userData.postal}','${userData.latitude}','${userData.longitude}')`, (queryErr, results) => {
+            connection.release(); 
+        
+            if (queryErr) {
+              console.error('Error executing query:', queryErr);
+              res.json({error: queryErr.message})
+            } else {
+              console.log('Query result:', results);
+                res.json(results)
+            }
+          });
+        });
+        console.log(userData);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Failed to fetch geolocation' });

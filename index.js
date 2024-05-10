@@ -45,9 +45,24 @@ app.get('/', async (req,res)=>{
     // });
 })
 app.post('/api/save/visitor/location/:ip', async (req, res) => {
+    const axios = require('axios');
+    
+    const options = {
+      method: 'GET',
+      url: 'https://ip-geolocation-find-ip-location-and-ip-info.p.rapidapi.com/backend/ipinfo/',
+      params: {ip: req.params.ip},
+      headers: {
+        'X-RapidAPI-Key': 'f5477797a3mshfb6292822327c3bp18707ajsn5075c83ad6e0',
+        'X-RapidAPI-Host': 'ip-geolocation-find-ip-location-and-ip-info.p.rapidapi.com'
+      }
+    };
+
     try {
-        const response = await axios.get(`https://ipapi.co/${req.params.ip}/json/`)
+        // const response = await axios.get(`https://ipapi.co/${req.params.ip}/json/`)
+        // const userData = response.data;
+        const response = await axios.request(options);
         const userData = response.data;
+	    console.log(response.data);
         
         pool.getConnection((err, connection) => {
           if (err) {
@@ -55,7 +70,7 @@ app.post('/api/save/visitor/location/:ip', async (req, res) => {
             return;
           }
         
-          connection.query(`INSERT INTO user_geolocation (ip_address,network,city,region,country,postal_code,latitude,longitude) VALUES('${userData.ip}','${userData.network}','${userData.city}','${userData.region}','${userData.country_name}','${userData.postal}','${userData.latitude}','${userData.longitude}')`, (queryErr, results) => {
+          connection.query(`INSERT INTO user_geolocation (ip_address,network,city,region,country,postal_code,latitude,longitude) VALUES('${userData.ip}','${userData.ip}','${userData.city}','${userData.region}','${userData.country_name}','${userData.postal}','${userData.latitude}','${userData.longitude}')`, (queryErr, results) => {
             connection.release(); 
         
             if (queryErr) {
@@ -67,7 +82,6 @@ app.post('/api/save/visitor/location/:ip', async (req, res) => {
             }
           });
         });
-        console.log(userData);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Failed to fetch geolocation' });

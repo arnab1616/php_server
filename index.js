@@ -44,10 +44,10 @@ app.get('/', async (req,res)=>{
     //   });
     // });
 })
-app.post('/api/save/visitor/location', async (req, res) => {
+app.post('/api/save/visitor/location/:ip', async (req, res) => {
     try {
-        res.json(req.body);
-        console.log(req.body);
+        res.json(req.params);
+        console.log(req.params);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Failed to fetch geolocation' });

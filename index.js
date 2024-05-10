@@ -62,26 +62,27 @@ app.post('/api/save/visitor/location/:ip', async (req, res) => {
         // const userData = response.data;
         const response = await axios.request(options);
         const userData = response.data;
-	    console.log(response.data);
+	console.log(response.data);
+	res.json(userData);
         
-        pool.getConnection((err, connection) => {
-          if (err) {
-            console.error('Error getting MySQL connection:', err);
-            return;
-          }
+        // pool.getConnection((err, connection) => {
+        //   if (err) {
+        //     console.error('Error getting MySQL connection:', err);
+        //     return;
+        //   }
         
-          connection.query(`INSERT INTO user_geolocation (ip_address,network,city,region,country,postal_code,latitude,longitude) VALUES('${userData.ip}','${userData.ip}','${userData.city}','${userData.region}','${userData.country_name}','${userData.postal}','${userData.latitude}','${userData.longitude}')`, (queryErr, results) => {
-            connection.release(); 
+        //   connection.query(`INSERT INTO user_geolocation (ip_address,network,city,region,country,postal_code,latitude,longitude) VALUES('${userData.ip}','${userData.ip}','${userData.city}','${userData.region}','${userData.country_name}','${userData.postal}','${userData.latitude}','${userData.longitude}')`, (queryErr, results) => {
+        //     connection.release(); 
         
-            if (queryErr) {
-              console.error('Error executing query:', queryErr);
-              res.json({error: queryErr.message})
-            } else {
-              console.log('Query result:', results);
-                res.json(results)
-            }
-          });
-        });
+        //     if (queryErr) {
+        //       console.error('Error executing query:', queryErr);
+        //       res.json({error: queryErr.message})
+        //     } else {
+        //       console.log('Query result:', results);
+        //         res.json(results)
+        //     }
+        //   });
+        // });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Failed to fetch geolocation' });

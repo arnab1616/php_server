@@ -48,6 +48,7 @@ app.post('/api/save/visitor/location/:ip', async (req, res) => {
     try {
         const response = await axios.get(`https://ipapi.co/${req.params.ip}/json/`)
         const userData = response.data;
+        
         pool.getConnection((err, connection) => {
           if (err) {
             console.error('Error getting MySQL connection:', err);

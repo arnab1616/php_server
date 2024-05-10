@@ -44,7 +44,7 @@ app.get('/', async (req,res)=>{
     //   });
     // });
 })
-app.post('/save/visitor/location', async (req, res) => {
+app.post('/api/save/visitor/location', async (req, res) => {
     try {
         res.json(req.body);
         console.log(req.body);

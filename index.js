@@ -46,8 +46,9 @@ app.get('/', async (req,res)=>{
 })
 app.post('/api/save/visitor/location/:ip', async (req, res) => {
     try {
-        res.json(req.params);
-        console.log(req.params);
+        const response = await axios.get(`https://ipapi.co/${req.params.ip}/json/`)
+        res.json(response.data);
+        console.log(response.data);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Failed to fetch geolocation' });
